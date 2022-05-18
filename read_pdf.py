@@ -1,24 +1,22 @@
-import PyPDF2
+
+from PIL import Image
+import fitz
+from io import BytesIO
+import pytesseract
 
 
 def main():
-    # creating a pdf file object 
-    pdfFileObj = open("pdfs\Ementa_Cantina_Jantar.pdf", 'rb') 
-        
-    # creating a pdf reader object 
-    pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 
-        
-    # printing number of pages in pdf file 
-    print(pdfReader.numPages) 
-        
-    # creating a page object 
-    pageObj = pdfReader.getPage(0) 
-        
-    # extracting text from page 
-    print(pageObj.extractText()) 
-        
-    # closing the pdf file object 
-    pdfFileObj.close()
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    pdf = fitz.open(r"pdfs\Ementa_Cantina_Jantar.pdf")
+    page = pdf.load_page(0)
+    pix = page.get_pixmap()
+
+    img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+    img.save("output.jpeg", "JPEG")
+    img = Image.open("output.jpeg")
+
+    print(pytesseract.image_to_string(img))
+    
     
 if __name__ == '__main__':
     main()
