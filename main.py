@@ -30,6 +30,11 @@ def read_pdf():
     pdf_almoco = fitz.open(r"pdfs\Ementa_Cantina_Almoco.pdf")
     pdf_jantar = fitz.open(r"pdfs\Ementa_Cantina_Jantar.pdf")
 
+    if not os.path.exists("{}\\almocos".format(os.path.dirname(os.path.abspath(__file__)))):
+        os.mkdir("{}\\almocos".format(os.path.dirname(os.path.abspath(__file__))))
+
+    if not os.path.exists("{}\\jantares".format(os.path.dirname(os.path.abspath(__file__)))):
+        os.mkdir("{}\\jantares".format(os.path.dirname(os.path.abspath(__file__))))
 
     for i in range(pdf_almoco.page_count):
         page = pdf_almoco.load_page(i)
