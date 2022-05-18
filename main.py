@@ -40,6 +40,8 @@ def read_pdf():
         wednesday_img = img.crop(wednesday)
         thursday_img = img.crop(thursday)
         friday_img = img.crop(friday)
+        if not os.path.exists("{}\\almocos\week{}".format(os.path.dirname(os.path.abspath(__file__)), i + 1)):
+            os.mkdir("{}\\almocos\week{}\\".format(os.path.dirname(os.path.abspath(__file__)), i + 1))
         monday_img.save("almocos\week{}\monday.jpeg".format(i + 1), "JPEG")
         tuesday_img.save("almocos\week{}\\tuesday.jpeg".format(i + 1), "JPEG")
         wednesday_img.save("almocos\week{}\wednesday.jpeg".format(i + 1), "JPEG")
@@ -55,6 +57,7 @@ def read_pdf():
         wednesday_img = img.crop(wednesday)
         thursday_img = img.crop(thursday)
         friday_img = img.crop(friday)
+        if not os.path.exists("{}\jantares\week{}".format(os.path.dirname(os.path.abspath(__file__)), i + 1)):os.mkdir("{}\jantares\week{}\\".format(os.path.dirname(os.path.abspath(__file__)), i + 1))
         monday_img.save("jantares\week{}\monday.jpeg".format(i + 1), "JPEG")
         tuesday_img.save("jantares\week{}\\tuesday.jpeg".format(i + 1), "JPEG")
         wednesday_img.save("jantares\week{}\wednesday.jpeg".format(i + 1), "JPEG")
