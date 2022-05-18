@@ -1,4 +1,7 @@
-
+from urllib.parse import urljoin
+import requests
+from bs4 import BeautifulSoup
+import os
 from PIL import Image
 import fitz
 
@@ -8,8 +11,22 @@ wednesday = (407, 165, 530, 310)
 thursday = (544, 165, 670, 310)
 friday = (680, 165, 800, 310)
 
+def get_pdf():
+    url = "http://www.sas.uminho.pt/Default.aspx?tabid=10&pageid=26&lang=pt-PT"
 
-def main():
+    folder_location = "{}\pdfs".format(os.path.dirname(os.path.abspath(__file__)))
+    if not os.path.exists(folder_location):os.mkdir(folder_location)
+
+    response = requests.get(url)
+    soup= BeautifulSoup(response.text, "html.parser")     
+    for link in soup.select("a[href$='.pdf']"):
+        #Name the pdf files using the last portion of each link which are unique in this case
+        filename = os.path.join(folder_location,link['href'].split('/')[-1])
+        with open(filename, 'wb') as f:
+            f.write(requests.get(urljoin(url,link['href'])).content)
+
+
+def read_pdf():
     pdf_almoco = fitz.open(r"pdfs\Ementa_Cantina_Almoco.pdf")
     pdf_jantar = fitz.open(r"pdfs\Ementa_Cantina_Jantar.pdf")
 
@@ -44,17 +61,10 @@ def main():
         thursday_img.save("jantares\week{}\\thursday.jpeg".format(i + 1), "JPEG")
         friday_img.save("jantares\week{}\\friday.jpeg".format(i + 1), "JPEG")
 
-    # page = pdf.load_page(0)
-    # pix = page.get_pixmap()
 
-    # img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-    # img.save("output.jpeg", "JPEG")
-    # img = Image.open("output.jpeg")
-    # img_croped = img.crop(monday)
-    # img_croped.save("output2.jpeg")
-
-    
-
+def main():
+    get_pdf()
+    read_pdf()
     
 if __name__ == '__main__':
     main()
